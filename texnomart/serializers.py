@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from texnomart.models import Product, Image, Category
+from texnomart.models import Product, Image, Category, Comment
 
 class ImageModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,3 +17,9 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+

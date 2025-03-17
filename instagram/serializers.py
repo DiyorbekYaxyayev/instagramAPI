@@ -2,6 +2,7 @@ from rest_framework import serializers
 from instagram.models import Post, Comment
 
 
+
 class CommentModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment

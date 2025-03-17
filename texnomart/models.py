@@ -25,3 +25,39 @@ class Product(models.Model):
 class Image(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='images')
+
+
+class User(models.Model):
+    username = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.username
+
+
+# class Comment(models.Model):
+#     post = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+#     text = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     rating = models.IntegerField(choices=((1, 'One'), (2, 'Two'), (3, 'Three'), (4, 'Four'), (5, 'Five')), default=1)
+#     likes = models.ManyToManyField(User, related_name='liked_comments')
+#     dislikes = models.ManyToManyField(User, related_name='disliked_comments')
+
+#     def __str__(self):
+#         return f"{self.text} by {self.post}
+
+
+
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.IntegerField(choices=((1, 'One'), (2, 'Two'), (3, 'Three'), (4, 'Four'), (5, 'Five')), default=1)
+
+    def __str__(self):
+        return f"{self.text} by {self.post}"
+    
