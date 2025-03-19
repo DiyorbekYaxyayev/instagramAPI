@@ -78,3 +78,36 @@ class PostViewSet(viewsets.ModelViewSet):
         if self.action in ['update', 'partial_update']:
             return [UpdateTimeLimit()]
         return super().get_permissions()
+
+
+
+from django.contrib.auth import authenticate
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+
+# JWT LOGIN
+@api_view(['POST'])
+@permission_classes([AllowAny])  # Har kim login qila olishi uchun
+def jwt_login_view(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    user = authenticate(username=username, password=password)
+
+    if user:
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }, status=status.HTTP_200_OK)
+
+    return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# JWT LOGOUT (faqat frontend tokenni o‘chirishi kerak)
+@api_view(['POST'])
+def jwt_logout_view(request):
+    return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
