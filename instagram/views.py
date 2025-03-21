@@ -107,7 +107,7 @@ def jwt_login_view(request):
     return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# JWT LOGOUT (faqat frontend tokenni o‘chirishi kerak)
 @api_view(['POST'])
 def jwt_logout_view(request):
     return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
+

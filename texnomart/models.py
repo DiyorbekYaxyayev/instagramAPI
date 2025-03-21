@@ -12,6 +12,9 @@ class Category(models.Model):
             self.slug = slugify(self.title)
         super(Category, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.title
+
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
@@ -21,10 +24,16 @@ class Product(models.Model):
     discount = models.SmallIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
 
+    def __str__(self):
+        return self.name
+
 
 class Image(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='images')
+
+    def __str__(self):
+        return f"Image for {self.product.name}"
 
 
 class User(models.Model):
@@ -37,27 +46,13 @@ class User(models.Model):
         return self.username
 
 
-# class Comment(models.Model):
-#     post = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
-#     text = models.TextField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     rating = models.IntegerField(choices=((1, 'One'), (2, 'Two'), (3, 'Three'), (4, 'Four'), (5, 'Five')), default=1)
-#     likes = models.ManyToManyField(User, related_name='liked_comments')
-#     dislikes = models.ManyToManyField(User, related_name='disliked_comments')
-
-#     def __str__(self):
-#         return f"{self.text} by {self.post}
-
-
-
-
-
 class Comment(models.Model):
     post = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(choices=((1, 'One'), (2, 'Two'), (3, 'Three'), (4, 'Four'), (5, 'Five')), default=1)
+    likes = models.ManyToManyField(User, related_name='liked_comments', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='disliked_comments', blank=True)
 
     def __str__(self):
-        return f"{self.text} by {self.post}"
-    
+        return f"{self.text[:20]}... by {self.post.name}"
