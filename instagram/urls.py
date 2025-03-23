@@ -8,7 +8,6 @@ router = DefaultRouter()
 router.register(r'posts', views.PostViewSet, basename='post')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('post-list/', views.PostListOrCreate.as_view(), name='post-list'),
     path('post-list/<int:pk>/', views.PostDetail.as_view(), name='post-detail'),
     path('', include(router.urls)),
